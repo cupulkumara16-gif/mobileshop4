@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TechZone Gadget Store</title>
+
+  <style>
+    :root{
+      --bg1:#060912;
+      --bg2:#0b1220;
+      --bg3:#0f172a;
+      --card:rgba(255,255,255,.08);
+      --card2:rgba(255,255,255,.05);
+      --border:rgba(255,255,255,.12);
+      --text:#eef4ff;
+      --muted:rgba(238,244,255,.72);
+      --muted2:rgba(238,244,255,.55);
+
+      --a1:#8A5CFF;
+      --a2:#00E5FF;
+      --a3:#00FFA3;
+      --warn:#FFCA3A;
+      --danger:#FF4D6D;
+      --ok:#31ff97;
+
+      --shadow:0 20px 60px rgba(0,0,0,.45);
+      --shadow2:0 10px 30px rgba(0,0,0,.30);
+
+      --r14:14px;
+      --r18:18px;
+      --r22:22px;
+      --r28:28px;
+
+      --max:1200px;
+      --pad:clamp(14px, 3vw, 28px);
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1000px 500px at 10% 10%, rgba(138,92,255,.22), transparent 60%),
+        radial-gradient(850px 500px at 90% 0%, rgba(0,229,255,.18), transparent 55%),
+        radial-gradient(700px 400px at 80% 85%, rgba(0,255,163,.12), transparent 50%),
+        linear-gradient(180deg,var(--bg1),var(--bg2),var(--bg3));
+      min-height:100vh;
+    }
+
+    a{text-decoration:none;color:inherit}
+    img{max-width:100%;display:block}
+    .wrap{width:min(var(--max),100%);margin:auto;padding:var(--pad)}
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:1000;
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+      background:linear-gradient(180deg, rgba(6,9,18,.82), rgba(6,9,18,.45));
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+
+    .nav{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      min-height:72px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:800;
+      font-size:18px;
+      letter-spacing:.4px;
+      min-width:0;
+    }
+
+    .logo{
+      width:40px;
+      height:40px;
+      border-radius:12px;
+      flex:0 0 auto;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,.35), transparent 35%),
+        linear-gradient(135deg,var(--a1),var(--a2),var(--a3));
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow:0 12px 35px rgba(0,229,255,.16);
+    }
+
+    .brand span{
+      background:linear-gradient(90deg,#fff,rgba(255,255,255,.75));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      white-space:nowrap;
+    }
+
+    .navRight{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .navlinks{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .pill{
+      padding:10px 13px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.11);
+      background:rgba(255,255,255,.05);
+      color:rgba(238,244,255,.92);
+      font-size:13px;
+      white-space:nowrap;
+      transition:.2s ease;
+    }
+
+    .pill:hover{
+      background:rgba(255,255,255,.09);
+      border-color:rgba(255,255,255,.2);
+      transform:translateY(-1px);
+    }
+
+    .menuBtn{
+      display:none;
+      width:44px;
+      height:44px;
+      border:none;
+      border-radius:12px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+      color:#fff;
+      font-size:20px;
+      cursor:pointer;
+    }
+
+    .mobileMenu{
+      display:none;
+      padding:0 0 14px;
+    }
+
+    .mobileMenu.open{display:block}
+
+    .mobileMenu .mobileLinks{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+
+    .hero{
+      padding:22px 0 8px;
+    }
+
+    .heroGrid{
+      display:grid;
+      grid-template-columns:1.2fr .8fr;
+      gap:16px;
+      align-items:stretch;
+    }
+
+    .heroCard{
+      position:relative;
+      overflow:hidden;
+      border-radius:var(--r28);
+      padding:clamp(18px,3vw,30px);
+      border:1px solid rgba(255,255,255,.15);
+      background:
+        radial-gradient(900px 480px at 10% 20%, rgba(138,92,255,.2), transparent 55%),
+        radial-gradient(700px 420px at 90% 10%, rgba(0,229,255,.18), transparent 55%),
+        linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+      box-shadow:var(--shadow);
+    }
+
+    .heroCard::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:linear-gradient(120deg, rgba(138,92,255,.32), rgba(0,229,255,.25), rgba(0,255,163,.15));
+      filter:blur(30px);
+      opacity:.35;
+      z-index:0;
+    }
+
+    .heroCard > *{position:relative;z-index:1}
+
+    .kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      width:fit-content;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.06);
+      color:rgba(238,244,255,.8);
+      font-size:12px;
+    }
+
+    .dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:var(--a2);
+      box-shadow:0 0 0 6px rgba(0,229,255,.14);
+    }
+
+    h1{
+      margin:16px 0 10px;
+      font-size:clamp(30px,5vw,52px);
+      line-height:1.05;
+      letter-spacing:-1px;
+    }
+
+    .grad{
+      background:linear-gradient(90deg,#fff,rgba(255,255,255,.75));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+
+    .sub{
+      margin:0 0 18px;
+      max-width:62ch;
+      color:var(--muted);
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .heroActions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:12px 16px;
+      border-radius:14px;
+      font-weight:700;
+      font-size:14px;
+      border:1px solid rgba(255,255,255,.13);
+      background:rgba(255,255,255,.06);
+      transition:.2s ease;
+    }
+
+    .btn:hover{
+      transform:translateY(-1px);
+      border-color:rgba(255,255,255,.22);
+      background:rgba(255,255,255,.1);
+    }
+
+    .btnPrimary{
+      background:linear-gradient(135deg, rgba(0,229,255,.22), rgba(138,92,255,.22));
+      border-color:rgba(0,229,255,.28);
+      box-shadow:0 12px 30px rgba(0,229,255,.12);
+    }
+
+    .searchBar{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-top:12px;
+      padding:10px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.06);
+    }
+
+    .searchBar input{
+      flex:1;
+      min-width:0;
+      border:none;
+      outline:none;
+      background:transparent;
+      color:#fff;
+      font-size:14px;
+    }
+
+    .searchBar input::placeholder{color:rgba(255,255,255,.55)}
+
+    .searchBtn{
+      padding:10px 14px;
+      border:none;
+      border-radius:12px;
+      background:linear-gradient(135deg,var(--a2),var(--a1));
+      color:#fff;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .sideCol{
+      display:grid;
+      gap:12px;
+    }
+
+    .miniCard{
+      border-radius:var(--r22);
+      padding:16px;
+      border:1px solid rgba(255,255,255,.13);
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
+      box-shadow:var(--shadow2);
+    }
+
+    .miniTitle{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:8px;
+      font-weight:800;
+    }
+
+    .badge{
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:800;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.06);
+    }
+
+    .badgeOffer{border-color:rgba(255,202,58,.35);background:rgba(255,202,58,.1)}
+    .badgeNew{border-color:rgba(0,255,163,.35);background:rgba(0,255,163,.1)}
+    .badgeFast{border-color:rgba(0,229,255,.35);background:rgba(0,229,255,.1)}
+
+    .miniText{
+      margin:0;
+      color:var(--muted);
+      font-size:13.5px;
+      line-height:1.6;
+    }
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:14px;
+      margin-top:18px;
+    }
+
+    .stat{
+      padding:16px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.05);
+      text-align:center;
+    }
+
+    .stat h3{
+      margin:0 0 6px;
+      font-size:24px;
+    }
+
+    .stat p{
+      margin:0;
+      color:var(--muted2);
+      font-size:13px;
+    }
+
+    section{padding:24px 0}
+    .sectionHead{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:14px;
+    }
+
+    .sectionHead h2{
+      margin:0;
+      font-size:clamp(21px,3vw,30px);
+    }
+
+    .sectionHead p{
+      margin:4px 0 0;
+      color:var(--muted2);
+      font-size:13.5px;
+    }
+
+    .chipsRow{
+      display:flex;
+      gap:10px;
+      overflow:auto;
+      padding-bottom:4px;
+      scrollbar-width:none;
+      margin-bottom:10px;
+    }
+    .chipsRow::-webkit-scrollbar{display:none}
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:15px;
+    }
+
+    .card{
+      display:flex;
+      flex-direction:column;
+      min-height:100%;
+      overflow:hidden;
+      border-radius:var(--r22);
+      border:1px solid rgba(255,255,255,.13);
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
+      box-shadow:var(--shadow2);
+      transition:.22s ease;
+    }
+
+    .card:hover{
+      transform:translateY(-4px);
+      border-color:rgba(255,255,255,.22);
+      background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+    }
+
+    .img{
+      aspect-ratio:16/10;
+      width:100%;
+      background-size:cover;
+      background-position:center;
+      position:relative;
+    }
+
+    .img::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, rgba(6,9,18,.05), rgba(6,9,18,.72));
+    }
+
+    .content{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      flex:1;
+      padding:14px;
+    }
+
+    .titleRow{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+    }
+
+    .pname{
+      margin:0;
+      font-size:16px;
+      line-height:1.35;
+    }
+
+    .tag{
+      flex:0 0 auto;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:800;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.05);
+      white-space:nowrap;
+    }
+
+    .tagNew{border-color:rgba(0,255,163,.35);background:rgba(0,255,163,.1)}
+    .tagOffer{border-color:rgba(255,202,58,.35);background:rgba(255,202,58,.1)}
+    .tagHot{border-color:rgba(0,229,255,.35);background:rgba(0,229,255,.1)}
+
+    .desc{
+      margin:0;
+      color:var(--muted);
+      line-height:1.6;
+      font-size:13.5px;
+    }
+
+    .meta{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-top:auto;
+      padding-top:10px;
+      border-top:1px solid rgba(255,255,255,.1);
+    }
+
+    .price{
+      font-size:15px;
+      font-weight:900;
+    }
+
+    .avail{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-size:12.5px;
+      color:rgba(238,244,255,.86);
+      white-space:nowrap;
+    }
+
+    .chip{
+      width:9px;
+      height:9px;
+      border-radius:50%;
+      background:var(--ok);
+      box-shadow:0 0 0 6px rgba(49,255,151,.12);
+    }
+
+    .chipLow{
+      background:var(--warn);
+      box-shadow:0 0 0 6px rgba(255,202,58,.12);
+    }
+
+    .chipOut{
+      background:var(--danger);
+      box-shadow:0 0 0 6px rgba(255,77,109,.12);
+    }
+
+    .newsletter{
+      margin-top:8px;
+      padding:20px;
+      border-radius:24px;
+      border:1px solid rgba(255,255,255,.12);
+      background:
+        radial-gradient(700px 300px at 0% 0%, rgba(138,92,255,.20), transparent 50%),
+        linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
+      box-shadow:var(--shadow2);
+    }
+
+    .newsletterBox{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+    }
+
+    .newsletterText h3{
+      margin:0 0 6px;
+      font-size:22px;
+    }
+
+    .newsletterText p{
+      margin:0;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.6;
+    }
+
+    .newsletterForm{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .newsletterForm input{
+      min-width:240px;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.06);
+      color:#fff;
+      outline:none;
+    }
+
+    .newsletterForm button{
+      padding:12px 16px;
+      border:none;
+      border-radius:14px;
+      background:linear-gradient(135deg,var(--a1),var(--a2));
+      color:#fff;
+      font-weight:800;
+      cursor:pointer;
+    }
+
+    .foot{
+      margin-top:24px;
+      padding:20px 0 90px;
+      border-top:1px solid rgba(255,255,255,.08);
+      display:flex;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+      color:var(--muted2);
+      font-size:13px;
+    }
+
+    .smallNote{color:var(--muted2);font-size:12.5px}
+
+    .mobileBottomBar{
+      display:none;
+      position:fixed;
+      left:12px;
+      right:12px;
+      bottom:12px;
+      z-index:1200;
+      padding:10px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.13);
+      background:rgba(8,12,22,.9);
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+      box-shadow:0 18px 45px rgba(0,0,0,.35);
+    }
+
+    .mobileBottomBar .inner{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+
+    .mobileBottomBar a{
+      text-align:center;
+      padding:12px 10px;
+      border-radius:14px;
+      font-size:14px;
+      font-weight:800;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+    }
+
+    .mobileBottomBar a.primary{
+      background:linear-gradient(135deg, rgba(0,229,255,.24), rgba(138,92,255,.24));
+      border-color:rgba(0,229,255,.22);
+    }
+
+    @media (max-width:980px){
+      .heroGrid{grid-template-columns:1fr}
+      .stats{grid-template-columns:repeat(2,1fr)}
+      .grid{grid-template-columns:repeat(2,1fr)}
+    }
+
+    @media (max-width:760px){
+      .navlinks{display:none}
+      .menuBtn{display:inline-flex;align-items:center;justify-content:center}
+      .mobileBottomBar{display:block}
+      .hero{padding-top:14px}
+      h1{font-size:clamp(28px,9vw,40px)}
+      .sub{font-size:14px}
+      .heroActions .btn{flex:1 1 calc(50% - 10px)}
+      .searchBar{flex-wrap:wrap}
+      .searchBar input{width:100%}
+      .searchBtn{width:100%}
+      .newsletterBox{align-items:flex-start}
+      .newsletterForm{width:100%}
+      .newsletterForm input{min-width:0;width:100%}
+      .newsletterForm button{width:100%}
+    }
+
+    @media (max-width:620px){
+      .grid{grid-template-columns:1fr}
+      .stats{grid-template-columns:1fr 1fr}
+      .heroCard,.miniCard,.card,.newsletter{border-radius:18px}
+      .meta{flex-direction:column;align-items:flex-start}
+      .heroActions .btn{flex:1 1 100%}
+      .sectionHead{align-items:flex-start}
+    }
+
+    @media (max-width:420px){
+      .stats{grid-template-columns:1fr}
+      .mobileMenu .mobileLinks{grid-template-columns:1fr}
+      .brand span{font-size:17px}
+    }
+  </style>
+</head>
+<body>
+
+  <div id="top"></div>
+
+  <header class="topbar">
+    <div class="wrap">
+      <div class="nav">
+        <div class="brand">
+          <div class="logo"></div>
+          <span>TechZone</span>
+        </div>
+
+        <div class="navRight">
+          <nav class="navlinks">
+            <a class="pill" href="#smartphones">Smartphones</a>
+            <a class="pill" href="#laptops">Laptops</a>
+            <a class="pill" href="#audio">Audio</a>
+            <a class="pill" href="#wearables">Wearables</a>
+            <a class="pill" href="#gaming">Gaming</a>
+            <a class="pill" href="#offers">Offers</a>
+          </nav>
+
+          <button class="menuBtn" onclick="toggleMenu()">☰</button>
+        </div>
+      </div>
+
+      <div class="mobileMenu" id="mobileMenu">
+        <div class="mobileLinks">
+          <a class="pill" href="#smartphones" onclick="toggleMenu()">Smartphones</a>
+          <a class="pill" href="#laptops" onclick="toggleMenu()">Laptops</a>
+          <a class="pill" href="#audio" onclick="toggleMenu()">Audio</a>
+          <a class="pill" href="#wearables" onclick="toggleMenu()">Wearables</a>
+          <a class="pill" href="#gaming" onclick="toggleMenu()">Gaming</a>
+          <a class="pill" href="#offers" onclick="toggleMenu()">Offers</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <section class="hero">
+      <div class="heroGrid">
+        <div class="heroCard">
+          <div class="kicker"><span class="dot"></span> Premium gadgets • Mobile optimized • Modern shopping UI</div>
+
+          <h1><span class="grad">TechZone<br>Gadget Store</h1>
+
+          <p class="sub">
+            Explore our newest smartphones, laptops, headphones, wearables, and gaming accessories in a sleek modern layout built for mobile and desktop users.
+          </p>
+
+          <div class="heroActions">
+            <a class="btn btnPrimary" href="#offers">See Offers</a>
+            <a class="btn" href="#smartphones">Browse Products</a>
+            <a class="btn" href="#gaming">Gamer Zone</a>
+          </div>
+
+          <div class="searchBar">
+            <input type="text" placeholder="Search gadgets, brands, or categories...">
+            <button class="searchBtn">Search</button>
+          </div>
+        </div>
+
+        <div class="sideCol">
+          <div class="miniCard">
+            <div class="miniTitle">
+              <span>🔥 Weekly Deal</span>
+              <span class="badge badgeOffer">SAVE</span>
+            </div>
+            <p class="miniText">Up to <b>10% OFF</b> on selected headphones and gaming accessories this week only.</p>
+          </div>
+
+          <div class="miniCard">
+            <div class="miniTitle">
+              <span>🆕 New Arrival</span>
+              <span class="badge badgeNew">NEW</span>
+            </div>
+            <p class="miniText"><b>Smartwatch Pro X</b> is now available with AMOLED display and long battery life.</p>
+          </div>
+
+          <div class="miniCard">
+            <div class="miniTitle">
+              <span>🚚 Fast Delivery</span>
+              <span class="badge badgeFast">FAST</span>
+            </div>
+            <p class="miniText">Island-wide delivery available with quick order updates after purchase.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <h3>500+</h3>
+          <p>Products</p>
+        </div>
+        <div class="stat">
+          <h3>24/7</h3>
+          <p>Support</p>
+        </div>
+        <div class="stat">
+          <h3>10K+</h3>
+          <p>Happy Customers</p>
+        </div>
+        <div class="stat">
+          <h3>Fast</h3>
+          <p>Delivery</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="offers">
+      <div class="sectionHead">
+        <div>
+          <h2>Special Offers & New Arrivals</h2>
+          <p>Highlighted products you should not miss right now.</p>
+        </div>
+        <a class="pill" href="#top">Back to top ↑</a>
+      </div>
+
+      <div class="chipsRow">
+        <span class="pill">Trending</span>
+        <span class="pill">Best Value</span>
+        <span class="pill">Latest Tech</span>
+        <span class="pill">Popular Picks</span>
+      </div>
+
+      <div class="grid">
+        <article class="card">
+          <div class="img" style="background-image:url('https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=1200&q=80');"></div>
+          <div class="content">
+            <div class="titleRow">
+              <h3 class="pname">SoundBeat Wireless</h3>
+              <span class="tag tagOffer">OFFER</span>
+            </div>
+            <p class="desc">Deep bass, 20h battery, and all-day comfort for music, study, and travel.</p>
+            <div class="meta">
+              <div class="price">Rs. 19,990</div>
+              <div class="avail"><span class="chip"></span>In Stock</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="img" style="background-image:url('https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=1200&q=80');"></div>
+          <div class="content">
+            <div class="titleRow">
+              <h3 class="pname">Smartwatch Pro X</h3>
+              <span class="tag tagNew">NEW</span>
+            </div>
+            <p class="desc">AMOLED display, sleep and heart tracking, and smooth performance.</p>
+            <div class="meta">
+              <div class="price">Rs. 39,990</div>
+              <div class="avail"><span class="chip"></span>In Stock</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="img" style="background-image:url('https://cdn.shopify.com/s/files/1/0295/5988/1807/files/gaming_Alternative_Lightweight_Mice_Slightly_Over_50_g_480x480.webp?v=1735367021=format&fit=crop&w=1200&q=80');"></div>
+          <div class="content">
+            <div class="titleRow">
+              <h3 class="pname">Gaming Mouse Ultra</h3>
+              <span class="tag tagHot">HOT</span>
+            </div>
+            <p class="desc">High-DPI precision, RGB lighting, and fast response for gamers.</p>
+            <div class="meta">
+              <div class="price">Rs. 9,990</div>
+              <div class="avail"><span class="chip chipLow"></span>Low Stock</div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="smartphones">
+      <div class="sectionHead">
+        <div>
+          <h2>Smartphones</h2>
+          <p>Fast, stylish, and reliable for daily use.</p>
+        </div>
+        <a class="pill" href="#top">Back to top ↑</a>
+      </div>
+
+      <div class="grid">
+        <article class="card">
+          <div class="img" style="background-image:url('https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=1200&q=80');"></div>
+          <div class="content">
+            <div class="titleRow">
+              <h3 class="pname">TechZone Spark S1</h3>
+              <span class="tag">VALUE</span>
+            </div>
+            <p class="desc">6.6-inch display, 128GB storage, and strong battery performance.</p>
+            <div class="meta">
+              <div class="price">Rs. 89,990</div>
+              <div class="avail"><span class="chip"></span>In Stock</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="img" style="background-image:url('https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=1200&q=80');"></div>
+          <div class="content">
+            <div class="titleRow">
+              <h3 class="pname">NovaCam X5</h3>
+              <span class="tag tagHot">TOP</span>
+            </div>
+            <p class="desc">50MP camera, night mode, and fast charging for busy users.</p>
+            <div class="meta">
+              <div class="price">Rs. 124,500</div>
+              <div class="avail"><span class="chip"></span>In Stock</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="img" style="background-image:url('https://images.unsplash.com/photo-1509395176047-4a66953fd231?auto=format&fit=crop&w=1200&q=80');"></div>
+          <div class="content">
+            <div class="titleRow">
+              <h3 class="pname">ProMax Elite 12</h3>
+              <span class="tag tagOffer">SALE</span>
+            </div>
+            <p class="desc">Premium design, 256GB storage, and smooth flagship performance.</p>
+            <div class="meta">
+              <div class="price">Rs. 189,990</div>
+              <div class="avail"><span class="chip chipOut"></span>Out of Stock</div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="laptops">
+      <div class="sectionHead">
+        <div>
+          <h2>Laptops</h2>
+          <p>Portable and powerful options for study and work.</p>
+        </div>
+        <a class="pill" href="#top">Back to top ↑</a>
+      </div>
+
+      <div class="grid">
+        <article class="card">
+          <div class="img" style="background-image:url('https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1200&q=80');"></div>
+          <div class="content">
+            <div class="titleRow">
+              <h3 class="pname">UltraBook Air 14</h3>
+              <span class="tag tagNew">NEW</span>
+            </div>
+            <p class="desc">Lightweight, 8GB RAM, 512GB SSD — excellent for students.</p>
+            <div class="meta">
+              <div class="price">Rs. 239,000</div>
+              <div class="avail"><span class="chip"></span>In Stock</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="img" style="background-image:url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80');"></div>
+          <div class="content">
+            <div class="titleRow">
+              <h3 class="pname">WorkMate Pro 15</h3>
+              <span class="tag">WORK</span>
+            </div>
+            <p class="desc">Core i7 performance with 16GB RAM for office and project work.</p>
+            <div class="meta">
+              <div class="price">Rs. 315,500</div>
+              <div class="avail"><span class="chip"></span>In Stock</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="img" style="background-image:url('https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=1200&q=80');"></div>
+          <div class="content">
+            <div class="titleRow">
+              <h3 class="pname">GameBoost 17</h3>
+              <span class="tag tagHot">POWER</span>
+            </div>
+            <p class="desc">Strong graphics power for gaming, editing, and heavy software tasks.</p>
+            <div class="meta">
+              <div class="price">Rs. 489,990</div>
+              <div class="avail"><span class="chip chipLow"></span>Low Stock</div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="audio">
+      <div class="sectionHead">
+        <div>
+          <h2>Audio & Headphones</h2>
+          <p>Comfortable sound gear for study, calls, and entertainment.</p>
+        </div>
+        <a class="pill" href="#top">Back to top ↑</a>
+      </div>
+
+      <div class="grid">
+        <article class="card">
+          <div class="img" style="background-image:url('https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=1200&q=80');"></div>
+          <div class="content">
+            <div class="titleRow">
+              <h3 class="pname">SoundBeat Wireless</h3>
+              <span class="tag tagOffer">OFFER</span>
+            </div>
+            <p class="desc">Wireless comfort with strong bass and excellent battery backup.</p>
+            <div class="meta">
+              <div class="price">Rs. 19,990</div>
+              <div class="avail"><span class="chip"></span>In Stock</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="img" style="background-image:url('https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1200&q=80');"></div>
+          <div class="content">
+            <div class="titleRow">
+              <h3 class="pname">StudioPods ANC</h3>
+              <span class="tag">ANC</span>
+            </div>
+            <p class="desc">Active noise cancelling with premium comfort for travel and work.</p>
+            <div class="meta">
+              <div class="price">Rs. 34,500</div>
+              <div class="avail"><span class="chip"></span>In Stock</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="img" style="background-image:url('https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?auto=format&fit=crop&w=1200&q=80');"></div>
+          <div class="content">
+            <div class="titleRow">
+              <h3 class="pname">MiniBuds Lite</h3>
+              <span class="tag">BUDS</span>
+            </div>
+            <p class="desc">Compact earbuds with clear calls and quick pairing support.</p>
+            <div class="meta">
+              <div class="price">Rs. 12,990</div>
+              <div class="avail"><span class="chip chipLow"></span>Low Stock</div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="wearables">
+      <div class="sectionHead">
+        <div>
+          <h2>Smartwatches / Wearables</h2>
+          <p>Health and smart features right on your wrist.</p>
+        </div>
+        <a class="pill" href="#top">Back to top ↑</a>
+      </div>
+
+      <div class="grid">
+        <article class="card">
+          <div class="img" style="background-image:url('https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=1200&q=80');"></div>
+          <div class="content">
+            <div class="titleRow">
+              <h3 class="pname">Smartwatch Pro X</h3>
+              <span class="tag tagNew">NEW</span>
+            </div>
+            <p class="desc">AMOLED display, sleep monitor, heart tracking, and stylish design.</p>
+            <div class="meta">
+              <div class="price">Rs. 39,990</div>
+              <div class="avail"><span class="chip"></span>In Stock</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="img" style="background-image:url('https://images.unsplash.com/photo-1510017803434-a899398421b3?auto=format&fit=crop&w=1200&q=80');"></div>
+          <div class="content">
+            <div class="titleRow">
+              <h3 class="pname">FitBand Active 2</h3>
+              <span class="tag">FIT</span>
+            </div>
+            <p class="desc">Daily fitness tracking with steps, calories, and waterproof support.</p>
+            <div class="meta">
+              <div class="price">Rs. 14,500</div>
+              <div class="avail"><span class="chip"></span>In Stock</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="img" style="background-image:url('https://static0.xdaimages.com/wordpress/wp-content/uploads/wm/2023/06/gizmo-watch-3-lifestyle-07-1.jpg?q=50&fit=crop&w=1600&h=1100&dpr=1.5=format&fit=crop&w=1200&q=80');"></div>
+          <div class="content">
+            <div class="titleRow">
+              <h3 class="pname">KidsWatch Safe</h3>
+              <span class="tag">KIDS</span>
+            </div>
+            <p class="desc">Family-friendly watch with basic tracking and call support.</p>
+            <div class="meta">
+              <div class="price">Rs. 22,990</div>
+              <div class="avail"><span class="chip chipOut"></span>Out of Stock</div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="gaming">
+      <div class="sectionHead">
+        <div>
+          <h2>Gaming Accessories</h2>
+          <p>Responsive gear designed for speed and performance.</p>
+        </div>
+        <a class="pill" href="#top">Back to top ↑</a>
+      </div>
+
+      <div class="grid">
+        <article class="card">
+          <div class="img" style="background-image:url('https://cdn.shopify.com/s/files/1/0295/5988/1807/files/gaming_Alternative_Lightweight_Mice_Slightly_Over_50_g_480x480.webp?v=1735367021=format&fit=crop&w=1200&q=80');"></div>
+          <div class="content">
+            <div class="titleRow">
+              <h3 class="pname">Gaming Mouse Ultra</h3>
+              <span class="tag tagHot">HOT</span>
+            </div>
+            <p class="desc">High-DPI gaming mouse with RGB lighting and fast tracking.</p>
+            <div class="meta">
+              <div class="price">Rs. 9,990</div>
+              <div class="avail"><span class="chip chipLow"></span>Low Stock</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="img" style="background-image:url('https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?auto=format&fit=crop&w=1200&q=80');"></div>
+          <div class="content">
+            <div class="titleRow">
+              <h3 class="pname">Mechanical Keyboard X</h3>
+              <span class="tag">MECH</span>
+            </div>
+            <p class="desc">Tactile switches, durable keys, and a premium typing feel.</p>
+            <div class="meta">
+              <div class="price">Rs. 18,500</div>
+              <div class="avail"><span class="chip"></span>In Stock</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="img" style="background-image:url('https://images.unsplash.com/photo-1599669454699-248893623440?auto=format&fit=crop&w=1200&q=80');"></div>
+          <div class="content">
+            <div class="titleRow">
+              <h3 class="pname">Pro Gamer Headset Z</h3>
+              <span class="tag tagOffer">OFFER</span>
+            </div>
+            <p class="desc">Surround sound and clear mic support for gaming and esports.</p>
+            <div class="meta">
+              <div class="price">Rs. 24,990</div>
+              <div class="avail"><span class="chip"></span>In Stock</div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="newsletter">
+      <div class="newsletterBox">
+        <div class="newsletterText">
+          <h3>Stay updated with latest gadgets</h3>
+          <p>Get updates about new arrivals, discounts, and special offers directly from TechZone.</p>
+        </div>
+
+        <div class="newsletterForm">
+          <input type="email" placeholder="Enter your email address">
+          <button>Subscribe</button>
+        </div>
+      </div>
+    </section>
+
+    <footer class="foot">
+      <div>
+        <b>TechZone Gadget Store</b><br>
+        <span class="smallNote">Contact: 077-1234567 • Email: hello@techzone.lk</span>
+      </div>
+      <div class="smallNote">
+        © 2026 TechZone • <a class="pill" style="padding:6px 10px;" href="#top">Back to top ↑</a>
+      </div>
+    </footer>
+  </main>
+
+  <div class="mobileBottomBar">
+    <div class="inner">
+      <a href="#offers" class="primary">View Offers</a>
+      <a href="#smartphones">Browse Items</a>
+    </div>
+  </div>
+
+  <script>
+    function toggleMenu(){
+      document.getElementById("mobileMenu").classList.toggle("open");
+    }
+  </script>
+</body>
+</html>
